@@ -1,0 +1,117 @@
+package com;
+import java.awt.*;
+import java.awt.event.*;
+
+public class DemoThreadGroup extends Frame implements Runnable,ActionListener {
+    int x1,x2,x3;
+    Button b1,b2;
+    Thread t1,t2,t3;
+    ThreadGroup tg;
+    
+	public DemoThreadGroup() {
+	setLayout(new FlowLayout());	
+	x1=50;
+	x2=50;
+	x3=50;
+	
+	tg=new ThreadGroup("tg");
+	t1=new Thread(tg,this);
+	t2=new Thread(tg,this);
+	t3=new Thread(tg,this);
+	
+	b1=new Button("Start");
+	b2=new Button("Stop");
+	add(b1);
+	add(b2);
+	t1.start();
+	t2.start();
+	t3.start();
+	
+	b1.addActionListener(this);
+	b2.addActionListener(this);
+	
+	setSize(500,500);
+	setVisible(true);
+	
+	addWindowListener(new WindowAdapter() {
+		
+		public void windowClosing(WindowEvent we)
+		{
+			dispose();
+		}
+		
+	});
+
+	}
+
+	
+	public static void main(String[] args) {
+		
+        new DemoThreadGroup(); 
+	}
+
+	
+	public void run() {
+		while(true)
+		{
+			if(Thread.currentThread().equals(t1))
+			{
+				x1=x1+2;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(Thread.currentThread().equals(t2))
+			{
+				x2=x2+10;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(Thread.currentThread().equals(t3))
+			{
+				x3=x3+5;
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			repaint();
+		}
+			
+	}
+			public void paint(Graphics g)
+			{
+			g.setColor(Color.red);	
+			g.fillOval(x1, 150, 50, 50);
+			g.setColor(Color.green);
+			g.fillOval(x2, 350, 50, 50);
+			g.setColor(Color.blue);
+			g.fillOval(x3, 250 , 50, 50);
+			
+			}
+		
+		
+
+
+		public void actionPerformed(ActionEvent e) {
+		if(e.getSource().equals(b1))
+		{
+			tg.resume();
+		}
+		
+		if(e.getSource().equals(b2))
+		{
+			tg.suspend();
+		}
+		}
+	}
+
