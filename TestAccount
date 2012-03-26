@@ -1,0 +1,33 @@
+package com;
+
+public class TestAccount {
+	public static void main(String[] args) 
+	{
+		final boolean creadit=true,debit=false;
+		Account ac1=new Account(1,10000);
+
+
+		AccountUser user1=new AccountUser(ac1,creadit,12000);
+
+
+
+		AccountUser user2=new AccountUser(ac1,debit,15000);
+
+
+		user1.setName("user1");
+		user2.setName("user2");
+
+			user2.start();
+		user1.start();
+		
+		try
+		{
+			user1.join();
+			user2.join();
+		}
+		catch(InterruptedException ie)
+		{
+			ie.printStackTrace();
+		}
+	}
+}
