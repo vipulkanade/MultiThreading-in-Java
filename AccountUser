@@ -1,0 +1,21 @@
+package com;
+
+class AccountUser extends Thread 
+{
+	Account obj;
+	boolean op;
+	int amt;
+	public AccountUser(Account obj,boolean op,int amt)
+	{
+		this.obj=obj;
+		this.op=op;
+		this.amt=amt;
+	}
+	public void run()
+	{
+		if(op==true)
+			obj.deposite(amt);
+		else
+			obj.withdraw(amt);
+	}
+}
