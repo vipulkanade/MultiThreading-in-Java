@@ -1,0 +1,57 @@
+package com;
+
+class Account 
+{
+	private int acc_no;
+	private long balance;
+	public Account()
+	{
+		acc_no=0;
+		balance=0;
+	}
+	public Account(int acc_no,long balance)
+	{
+		this.acc_no=acc_no;
+		this.balance=balance;
+	}
+	public long getBalance()
+	{
+		return(balance);
+	}
+	public synchronized void deposite(int amt)
+	{System.out.println("Deposite");
+		balance=balance+amt;
+		System.out.println("Deposite is completed by "+Thread.currentThread().getName());
+		System.out.println("Balance after deposite is="+balance);
+		this.notify();
+	}
+	public  synchronized void withdraw(int amt)
+	{System.out.println("Withdraw");
+		long temp,flag=1;
+		while(flag!=0)
+		{
+		       temp=balance;
+			  	if((temp-(amt)>=500))
+			       {
+							temp=temp-amt;
+							balance=temp;
+							flag=0;
+							
+					}
+				else
+				{
+					try
+						{
+							System.out.println("Insufficient balance "+Thread.currentThread().getName()+" is waiting");
+							wait();
+						}
+						catch(Exception ie)
+						{
+							ie.printStackTrace();
+						}
+				}
+		}
+		System.out.println("Withdraw is completed by "+Thread.currentThread().getName());
+		System.out.println("Balance after withdraw is="+balance);
+	}
+}
